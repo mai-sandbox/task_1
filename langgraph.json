@@ -1,0 +1,32 @@
+{
+  "python_version": "3.11",
+  "dependencies": [
+    "langgraph>=0.2.0",
+    "langchain>=0.3.0",
+    "langchain-openai>=0.2.0",
+    "langchain-core>=0.3.0"
+  ],
+  "graphs": [
+    {
+      "name": "review_agent_system",
+      "path": "agent:app",
+      "env": {
+        "OPENAI_API_KEY": "YOUR_API_KEY_HERE"
+      },
+      "config_schema": {
+        "configurable": {
+          "max_iterations": {
+            "type": "integer",
+            "default": 3,
+            "description": "Maximum number of review iterations"
+          },
+          "model": {
+            "type": "string",
+            "default": "gpt-4o-mini",
+            "description": "LLM model to use"
+          }
+        }
+      }
+    }
+  ]
+}
