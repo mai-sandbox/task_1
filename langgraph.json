@@ -1,0 +1,17 @@
+{
+  "python_path": ".",
+  "graphs": {
+    "agent": {
+      "module": "agent",
+      "class": "app"
+    }
+  },
+  "dependencies": {
+    "langchain": ">=0.1.0",
+    "langchain-openai": ">=0.0.5",
+    "langgraph": ">=0.0.20"
+  },
+  "env": {
+    "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+  }
+}
