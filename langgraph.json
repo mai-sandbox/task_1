@@ -1,0 +1,13 @@
+{
+  "dependencies": [
+    "."
+  ],
+  "graphs": {
+    "review_workflow": {
+      "path": "./agent.py:app",
+      "description": "A review-based React agent workflow that wraps any React agent to add quality control and feedback loops"
+    }
+  },
+  "env": ".env",
+  "python_version": "3.11"
+}
