@@ -1,0 +1,12 @@
+{
+  "dependencies": [
+    "."
+  ],
+  "graphs": {
+    "two_stage_review_agent": {
+      "path": "./agent.py:app",
+      "description": "A two-stage agent review workflow that processes queries through a React agent and then reviews the output for quality approval or revision requests."
+    }
+  },
+  "env": ".env"
+}
