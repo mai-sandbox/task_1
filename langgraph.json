@@ -1,0 +1,13 @@
+{
+  "agent": {
+    "path": "./agent.py:app"
+  },
+  "dependencies": [
+    "langchain",
+    "langchain-openai",
+    "langgraph"
+  ],
+  "env": {
+    "OPENAI_API_KEY": ""
+  }
+}
