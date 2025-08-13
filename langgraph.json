@@ -1,0 +1,25 @@
+{
+  "dependencies": [
+    "langchain-core",
+    "langgraph",
+    "langchain-openai",
+    "langchain-anthropic",
+    "langchain-community"
+  ],
+  "graphs": {
+    "agent": {
+      "path": "./agent.py",
+      "description": "Two-stage agent review workflow that runs a ReAct agent and reviews its output",
+      "entrypoint": "app"
+    }
+  },
+  "env": {
+    "OPENAI_API_KEY": null,
+    "ANTHROPIC_API_KEY": null,
+    "LANGCHAIN_API_KEY": null,
+    "LANGCHAIN_TRACING_V2": "true",
+    "LANGCHAIN_PROJECT": "two-stage-agent-review"
+  },
+  "dockerfile_lines": [],
+  "python_version": "3.11"
+}
