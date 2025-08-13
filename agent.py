@@ -184,11 +184,45 @@ def review_agent(state: AgentState) -> Dict[str, Any]:
     }
 
 
+def should_continue_review(state: AgentState) -> str:
+    """
+    Conditional function that determines the next step in the workflow.
+    
+    This function checks if the review agent approved the output or if the maximum
+    number of review attempts has been reached. It returns the next node to execute
+    or 'finish' to end the workflow.
+    
+    Args:
+        state: Current agent state containing review results and counters
+        
+    Returns:
+        str: Next node to execute ('react_agent', 'finish')
+    """
+    # Check if the output was approved by the review agent
+    is_approved = state.get("approved", False)
+    
+    # Get review count and max reviews
+    review_count = state.get("review_count", 0)
+    max_reviews = state.get("max_reviews", 3)
+    
+    # If approved, finish the workflow
+    if is_approved:
+        return "finish"
+    
+    # If we've reached the maximum number of reviews, finish anyway to prevent infinite loops
+    if review_count >= max_reviews:
+        return "finish"
+    
+    # Otherwise, send back to react_agent for another attempt
+    return "react_agent"
+
+
 # Initialize the StateGraph with the AgentState schema
 graph = StateGraph(AgentState)
 
 # Placeholder for the compiled graph - will be implemented in subsequent tasks
 app = None
+
 
 
 
