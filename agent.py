@@ -220,8 +220,31 @@ def should_continue_review(state: AgentState) -> str:
 # Initialize the StateGraph with the AgentState schema
 graph = StateGraph(AgentState)
 
-# Placeholder for the compiled graph - will be implemented in subsequent tasks
-app = None
+# Add nodes to the graph
+graph.add_node("react_agent", react_agent)
+graph.add_node("review_agent", review_agent)
+
+# Set the entry point to react_agent
+graph.set_entry_point("react_agent")
+
+# Add edges between nodes
+# From react_agent to review_agent (always goes to review after generating response)
+graph.add_edge("react_agent", "review_agent")
+
+# Add conditional edges from review_agent using the should_continue_review function
+# This will route to either 'react_agent' (for retry) or END (finish workflow)
+graph.add_conditional_edges(
+    "review_agent",
+    should_continue_review,
+    {
+        "react_agent": "react_agent",  # Retry with react_agent
+        "finish": END,  # End the workflow
+    }
+)
+
+# Compile the graph and export as 'app'
+app = graph.compile()
+
 
 
 
