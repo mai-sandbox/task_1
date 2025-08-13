@@ -235,5 +235,33 @@ def should_continue_review(state: AgentState) -> Literal["END", "react_agent"]:
         return "END"
 
 
+# Build the StateGraph workflow
+# Add nodes to the graph
+graph.add_node("react_agent", react_agent)
+graph.add_node("review_agent", review_agent)
+
+# Set the entry point
+graph.set_entry_point("react_agent")
+
+# Add edges
+# From react_agent to review_agent (always goes to review after generating output)
+graph.add_edge("react_agent", "review_agent")
+
+# Add conditional edge from review_agent
+# Uses should_continue_review to decide between END or back to react_agent
+graph.add_conditional_edges(
+    "review_agent",
+    should_continue_review,
+    {
+        "END": "__end__",
+        "react_agent": "react_agent"
+    }
+)
+
+# Compile the graph and export as 'app'
+app = graph.compile()
+
+
+
 
 
