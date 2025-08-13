@@ -192,8 +192,51 @@ def review_agent(state: AgentState) -> AgentState:
     return updated_state
 
 
+def should_continue_review(state: AgentState) -> str:
+    """
+    Conditional function that determines the next step in the workflow based on review outcome.
+    
+    This function checks the latest review message to determine if the output was approved
+    or needs revision. It also enforces the max_reviews limit to prevent infinite loops.
+    
+    Args:
+        state: Current agent state containing messages and review count
+        
+    Returns:
+        str: Next node to execute - either 'END' (approved/max reviews reached) or 'react_agent' (needs revision)
+    """
+    messages = state["messages"]
+    review_count = state["review_count"]
+    max_reviews = state["max_reviews"]
+    
+    # Check if we've reached the maximum number of reviews
+    if review_count >= max_reviews:
+        return "END"  # Force end to prevent infinite loops
+    
+    # Find the latest review message (should be an AIMessage from review_agent)
+    latest_review = None
+    for msg in reversed(messages):
+        if isinstance(msg, AIMessage) and ("REVIEW APPROVED" in msg.content or "REVIEW REJECTED" in msg.content):
+            latest_review = msg
+            break
+    
+    # If no review message found, something went wrong - end the workflow
+    if latest_review is None:
+        return "END"
+    
+    # Check if the review was approved
+    if "REVIEW APPROVED" in latest_review.content:
+        return "END"  # Output was approved, end the workflow
+    elif "REVIEW REJECTED" in latest_review.content:
+        return "react_agent"  # Output needs revision, send back to react agent
+    else:
+        # Fallback case - if we can't determine the review outcome, end the workflow
+        return "END"
+
+
 # Placeholder for the compiled app - will be set after building the workflow
 app = None
+
 
 
 
