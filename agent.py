@@ -32,3 +32,7 @@ class AgentState(TypedDict):
 
 # Initialize the StateGraph with our custom state
 graph = StateGraph(AgentState)
+
+# Default values for state initialization
+DEFAULT_MAX_REVIEWS = 3
+
