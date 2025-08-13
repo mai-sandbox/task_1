@@ -93,3 +93,96 @@ def react_agent(state: AgentState) -> AgentState:
     return updated_state
 
 
+def review_agent(state: AgentState) -> AgentState:
+    """
+    Review agent node that evaluates the current output from the react agent.
+    
+    This is a dummy implementation that uses simple heuristics to decide approval.
+    In a real implementation, this would be replaced with sophisticated evaluation
+    criteria, potentially using another LLM or specific quality metrics.
+    
+    Args:
+        state: Current agent state containing current_output to review
+        
+    Returns:
+        Updated state with review message added and review_count incremented
+    """
+    import random
+    
+    current_output = state.get("current_output", "")
+    review_count = state.get("review_count", 0)
+    max_reviews = state.get("max_reviews", DEFAULT_MAX_REVIEWS)
+    
+    # Dummy evaluation logic based on simple heuristics
+    approval_score = 0
+    feedback_points = []
+    
+    # Check length - prefer responses that are not too short or too long
+    if len(current_output) < 20:
+        feedback_points.append("Response is too brief and lacks detail")
+    elif len(current_output) > 500:
+        feedback_points.append("Response is too verbose")
+        approval_score += 1  # Still okay, just verbose
+    else:
+        approval_score += 2  # Good length
+    
+    # Check for key quality indicators
+    if "analysis" in current_output.lower() or "think" in current_output.lower():
+        approval_score += 2
+        feedback_points.append("Good: Shows analytical thinking")
+    
+    if "help" in current_output.lower() or "assist" in current_output.lower():
+        approval_score += 1
+        feedback_points.append("Good: Demonstrates helpfulness")
+    
+    # Check for engagement
+    if "?" in current_output:
+        approval_score += 1
+        feedback_points.append("Good: Engages with questions")
+    
+    # Check for politeness
+    if any(word in current_output.lower() for word in ["please", "thank", "sorry"]):
+        approval_score += 1
+        feedback_points.append("Good: Polite tone")
+    
+    # Add some randomness to make it more realistic (but weighted towards approval)
+    random_factor = random.choice([0, 1, 1, 2])  # Weighted towards positive
+    approval_score += random_factor
+    
+    # Determine approval based on score and review count
+    # Be more lenient as review count increases to avoid infinite loops
+    approval_threshold = max(3 - review_count, 1)  # Lower threshold with more reviews
+    
+    # Force approval if we've reached max reviews
+    if review_count >= max_reviews:
+        is_approved = True
+        review_message = f"APPROVED (Max reviews reached): After {review_count} reviews, accepting current output to prevent infinite loop."
+    elif approval_score >= approval_threshold:
+        is_approved = True
+        positive_feedback = [fp for fp in feedback_points if fp.startswith("Good:")]
+        if positive_feedback:
+            review_message = f"APPROVED: {' '.join(positive_feedback)} Score: {approval_score}/{approval_threshold}"
+        else:
+            review_message = f"APPROVED: Output meets quality standards. Score: {approval_score}/{approval_threshold}"
+    else:
+        is_approved = False
+        if feedback_points:
+            review_message = f"NEEDS REVISION: {' '.join(feedback_points)} Score: {approval_score}/{approval_threshold}. Please improve the response."
+        else:
+            review_message = f"NEEDS REVISION: Output quality could be improved. Score: {approval_score}/{approval_threshold}. Please provide more detail and engagement."
+    
+    # Update the state
+    updated_state = state.copy()
+    updated_state["review_count"] = review_count + 1
+    
+    # Add review message to the conversation
+    review_msg = AIMessage(
+        content=review_message,
+        additional_kwargs={"review_decision": "approved" if is_approved else "rejected"}
+    )
+    updated_state["messages"] = state["messages"] + [review_msg]
+    
+    return updated_state
+
+
+
