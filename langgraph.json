@@ -1,0 +1,7 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "review_loop_agent": "./agent:app"
+  },
+  "env": ".env"
+}
