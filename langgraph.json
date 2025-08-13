@@ -1,10 +1,13 @@
 {
   "dependencies": [
-    "langchain-core",
-    "langgraph"
+    "langchain-core>=0.1.0",
+    "langgraph>=0.1.0"
   ],
   "graphs": {
     "agent": "./agent.py:app"
   },
-  "env": ".env"
+  "env": ".env",
+  "dockerfile_lines": [],
+  "python_version": "3.11"
 }
+
