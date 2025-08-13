@@ -1,0 +1,21 @@
+# Core LangGraph and LangChain dependencies
+langgraph>=0.2.0
+langchain>=0.2.0
+langchain-core>=0.2.0
+
+# OpenAI integration for chat models
+langchain-openai>=0.1.0
+
+# Community integrations and additional tools
+langchain-community>=0.2.0
+
+# Additional dependencies for agent functionality
+typing-extensions>=4.5.0
+
+# Optional: For enhanced tool support and integrations
+# Uncomment as needed based on specific ReAct agent requirements
+# tavily-python>=0.3.0  # For web search tools
+# requests>=2.31.0      # For HTTP-based tools
+# beautifulsoup4>=4.12.0  # For web scraping tools
+# numpy>=1.24.0         # For numerical computations
+# pandas>=2.0.0         # For data manipulation tools
