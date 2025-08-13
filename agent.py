@@ -31,5 +31,27 @@ class AgentState(TypedDict):
 # Initialize the StateGraph with our custom state
 graph = StateGraph(AgentState)
 
+# Default values for state initialization
+DEFAULT_MAX_REVIEWS = 3
+
+def initialize_state(messages: List[BaseMessage], max_reviews: int = DEFAULT_MAX_REVIEWS) -> AgentState:
+    """
+    Initialize the agent state with default values.
+    
+    Args:
+        messages: Initial messages for the conversation
+        max_reviews: Maximum number of review iterations (default: 3)
+    
+    Returns:
+        AgentState: Initialized state dictionary
+    """
+    return {
+        "messages": messages,
+        "current_output": "",
+        "review_count": 0,
+        "max_reviews": max_reviews
+    }
+
 # Placeholder for the compiled app - will be set after building the workflow
 app = None
+
