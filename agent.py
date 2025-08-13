@@ -10,8 +10,9 @@ The workflow is designed to be generic and work with arbitrary react agents.
 """
 
 from typing import List, Dict, Any, TypedDict, Annotated
-from langgraph import StateGraph
+from langgraph import StateGraph, END
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage, SystemMessage
+import random
 
 
 class AgentState(TypedDict):
@@ -30,5 +31,9 @@ class AgentState(TypedDict):
     max_reviews: Annotated[int, "Maximum number of review attempts allowed"]
 
 
+# Initialize the StateGraph with the AgentState schema
+graph = StateGraph(AgentState)
+
 # Placeholder for the compiled graph - will be implemented in subsequent tasks
 app = None
+
