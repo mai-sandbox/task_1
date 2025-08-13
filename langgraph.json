@@ -1,0 +1,17 @@
+{
+  "dependencies": [
+    "langgraph",
+    "langchain",
+    "langchain-core",
+    "langchain-openai"
+  ],
+  "graphs": {
+    "agent": "./agent.py:app"
+  },
+  "env": {
+    "OPENAI_API_KEY": null,
+    "LANGCHAIN_API_KEY": null,
+    "LANGCHAIN_TRACING_V2": "true",
+    "LANGCHAIN_PROJECT": "two-stage-review-agent"
+  }
+}
