@@ -24,11 +24,15 @@ from langgraph import StateGraph
 app = graph.compile()  # Export compiled graph as 'app'
 ```
 
-## Documentation References
+## Agent Instructions
 
-- **LangGraph Python**: https://langchain-ai.github.io/langgraph/llms.txt
-- **LangGraph JS**: https://langchain-ai.github.io/langgraphjs/llms.txt  
-- **LangChain Python**: https://python.langchain.com/llms.txt
-- **LangChain JS**: https://js.langchain.com/llms.txt
+The agent must accept a minimal state containing only a `messages` list with a `HumanMessage`:
 
-Refer to documentation for implementation details, best practices, and deployment configurations.
+```python
+from agent import app
+
+initial_state = {
+    "messages": [HumanMessage("Your prompt here")]
+}
+result = app.invoke(initial_state)
+```
