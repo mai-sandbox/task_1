@@ -185,4 +185,55 @@ def review_agent(state: AgentState) -> AgentState:
     return updated_state
 
 
+def should_continue_review(state: AgentState) -> Literal["END", "react_agent"]:
+    """
+    Conditional function that determines the next step in the workflow.
+    
+    Checks the latest review message to determine if the output was approved
+    or needs revision. Also enforces max_reviews limit to prevent infinite loops.
+    
+    Args:
+        state: Current agent state containing messages and review tracking
+        
+    Returns:
+        "END" if output is approved or max reviews reached
+        "react_agent" if output needs revision and under review limit
+    """
+    messages = state.get("messages", [])
+    review_count = state.get("review_count", 0)
+    max_reviews = state.get("max_reviews", DEFAULT_MAX_REVIEWS)
+    
+    # Safety check: if we've reached max reviews, always end
+    if review_count >= max_reviews:
+        return "END"
+    
+    # Find the latest review message (should be the most recent AIMessage with review_decision)
+    latest_review = None
+    for msg in reversed(messages):
+        if isinstance(msg, AIMessage) and hasattr(msg, 'additional_kwargs'):
+            if msg.additional_kwargs and "review_decision" in msg.additional_kwargs:
+                latest_review = msg
+                break
+    
+    # If no review message found, something went wrong - end to be safe
+    if latest_review is None:
+        return "END"
+    
+    # Check the review decision
+    review_decision = latest_review.additional_kwargs.get("review_decision", "")
+    
+    if review_decision == "approved":
+        return "END"
+    elif review_decision == "rejected":
+        # Only continue if we haven't reached max reviews
+        if review_count < max_reviews:
+            return "react_agent"
+        else:
+            return "END"
+    else:
+        # Unknown decision - end to be safe
+        return "END"
+
+
+
 
