@@ -87,10 +87,108 @@ def react_agent(state: AgentState) -> Dict[str, Any]:
     }
 
 
+def review_agent(state: AgentState) -> Dict[str, Any]:
+    """
+    Review agent node that evaluates the current output from the react agent.
+    
+    This is a dummy implementation that uses simple heuristics to approve or reject
+    the output. In a real implementation, this would be replaced with an actual
+    review agent that uses more sophisticated evaluation criteria.
+    
+    Args:
+        state: Current agent state containing the output to review
+        
+    Returns:
+        Dictionary with updated state fields including review decision
+    """
+    current_output = state.get("current_output", "")
+    messages = state["messages"]
+    review_count = state.get("review_count", 0)
+    max_reviews = state.get("max_reviews", 3)
+    
+    # Increment review count
+    new_review_count = review_count + 1
+    
+    # Dummy implementation: Use simple heuristics to evaluate quality
+    approval_score = 0
+    feedback_points = []
+    
+    # Heuristic 1: Length check (good responses should be substantial)
+    if len(current_output) >= 100:
+        approval_score += 2
+        feedback_points.append("✓ Response has good length and detail")
+    else:
+        approval_score -= 1
+        feedback_points.append("✗ Response seems too brief")
+    
+    # Heuristic 2: Check for key phrases that indicate thoughtful response
+    thoughtful_phrases = [
+        "analysis", "consider", "recommend", "approach", "factors",
+        "implications", "best practices", "comprehensive", "detailed"
+    ]
+    found_phrases = [phrase for phrase in thoughtful_phrases if phrase in current_output.lower()]
+    if len(found_phrases) >= 2:
+        approval_score += 2
+        feedback_points.append(f"✓ Contains thoughtful language: {', '.join(found_phrases[:3])}")
+    else:
+        approval_score -= 1
+        feedback_points.append("✗ Could use more analytical language")
+    
+    # Heuristic 3: Check for structure and completeness
+    if "." in current_output and len(current_output.split(".")) >= 2:
+        approval_score += 1
+        feedback_points.append("✓ Response has good sentence structure")
+    else:
+        feedback_points.append("✗ Response could be better structured")
+    
+    # Heuristic 4: Random factor to simulate subjective review (20% chance of random approval/rejection)
+    random_factor = random.random()
+    if random_factor < 0.1:  # 10% chance of random rejection
+        approval_score -= 2
+        feedback_points.append("✗ Random quality concern detected")
+    elif random_factor > 0.9:  # 10% chance of random approval boost
+        approval_score += 1
+        feedback_points.append("✓ Exceptional quality detected")
+    
+    # Determine approval based on score and review count
+    is_approved = approval_score >= 2
+    
+    # Force approval if we've reached max reviews to prevent infinite loops
+    if new_review_count >= max_reviews:
+        is_approved = True
+        feedback_points.append(f"✓ Approved after {max_reviews} review attempts (max reached)")
+    
+    # Create review message
+    if is_approved:
+        review_status = "APPROVED"
+        review_message = f"Review Agent Decision: {review_status}\n"
+        review_message += f"Score: {approval_score}/5\n"
+        review_message += f"Review #{new_review_count}: The output meets quality standards.\n"
+        review_message += "Feedback:\n" + "\n".join(feedback_points)
+    else:
+        review_status = "REJECTED"
+        review_message = f"Review Agent Decision: {review_status}\n"
+        review_message += f"Score: {approval_score}/5\n"
+        review_message += f"Review #{new_review_count}: The output needs improvement.\n"
+        review_message += "Feedback for improvement:\n" + "\n".join(feedback_points)
+        review_message += "\nPlease revise and resubmit."
+    
+    # Add review message to conversation
+    updated_messages = messages + [SystemMessage(content=review_message)]
+    
+    # Return updated state
+    return {
+        "messages": updated_messages,
+        "review_count": new_review_count,
+        "approved": is_approved,  # Add approval status for conditional logic
+    }
+
+
 # Initialize the StateGraph with the AgentState schema
 graph = StateGraph(AgentState)
 
 # Placeholder for the compiled graph - will be implemented in subsequent tasks
 app = None
+
 
 
