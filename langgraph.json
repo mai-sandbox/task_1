@@ -2,10 +2,39 @@
   "dependencies": [
     "langchain-anthropic",
     "langchain-core",
-    "langgraph"
+    "langgraph",
+    "typing-extensions"
   ],
   "graphs": {
     "agent": "./agent.py:app"
   },
-  "env": ".env"
+  "env": ".env",
+  "python_version": "3.11",
+  "pip_config_file": false,
+  "dockerfile_lines": [],
+  "metadata": {
+    "name": "Two-Stage Agent Review Workflow",
+    "description": "A generic LangGraph implementation that runs a React agent to generate initial output, then uses a review agent to evaluate that output. If the review is satisfactory, the workflow finishes. Otherwise, it sends feedback back to the original agent for revision.",
+    "version": "1.0.0",
+    "author": "LangGraph Implementation",
+    "tags": ["review", "workflow", "multi-agent", "react", "feedback-loop"]
+  },
+  "configuration_annotation": {
+    "max_iterations": {
+      "type": "int",
+      "description": "Maximum number of review iterations to prevent infinite loops",
+      "default": 5
+    },
+    "model_name": {
+      "type": "str", 
+      "description": "Name of the language model to use",
+      "default": "claude-3-5-sonnet-20241022"
+    },
+    "enable_review": {
+      "type": "bool",
+      "description": "Whether to enable the review stage",
+      "default": true
+    }
+  }
 }
+
