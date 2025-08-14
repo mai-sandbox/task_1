@@ -106,7 +106,7 @@ def print_workflow_results(result: Dict[str, Any], task_name: str):
 
         print(f"{i}. [{role}]: {content}")
 
-    print(f"{'='*60}\n")
+    print(f"{'=' * 60}\n")
 
 
 def test_basic_text_generation():
@@ -592,4 +592,5 @@ if __name__ == "__main__":
         print("If you don't have API access, run with --demo-only flag\n")
 
         run_all_tests()
+
 
