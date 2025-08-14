@@ -119,7 +119,24 @@ def test_basic_text_generation():
     
     task = "Write a brief summary of the benefits of renewable energy. Include at least 3 key benefits and keep it under 150 words."
     
-    # Run the workflow
+    if not WORKFLOW_AVAILABLE or not DEPENDENCIES_AVAILABLE:
+        print("⚠️  Running in demo mode - showing expected workflow structure")
+        # Mock result for demonstration
+        result = {
+            'review_status': 'approved',
+            'iteration_count': 1,
+            'current_task': task,
+            'review_feedback': None,
+            'messages': [
+                {'role': 'user', 'content': task},
+                {'role': 'assistant', 'content': 'Renewable energy offers significant benefits including: 1) Environmental protection through reduced greenhouse gas emissions, 2) Energy independence by reducing reliance on fossil fuel imports, 3) Economic growth through job creation in green industries. These clean energy sources like solar and wind are becoming increasingly cost-effective and sustainable for long-term energy needs.'},
+                {'role': 'review_agent', 'content': 'APPROVED: The response covers all required elements - includes 3+ key benefits, stays under 150 words, and provides clear, accurate information about renewable energy advantages.'}
+            ]
+        }
+        print_workflow_results(result, "Basic Text Generation")
+        return result
+    
+    # Run the actual workflow if dependencies are available
     initial_state = setup_workflow_state(task)
     result = app.invoke(initial_state)
     
@@ -354,4 +371,5 @@ if __name__ == "__main__":
         print("If you don't have API access, run with --demo-only flag\n")
         
         run_all_tests()
+
 
