@@ -308,6 +308,58 @@ The guide must include:
 5. Common pitfalls to avoid
 6. Must be at least 500 words and well-structured"""
     
+    if not WORKFLOW_AVAILABLE or not DEPENDENCIES_AVAILABLE:
+        print("⚠️  Running in demo mode - showing expected workflow structure")
+        # Mock result demonstrating multiple review cycles
+        result = {
+            'review_status': 'approved',
+            'iteration_count': 3,
+            'current_task': task,
+            'review_feedback': None,
+            'messages': [
+                {'role': 'user', 'content': task},
+                {'role': 'assistant', 'content': 'Machine learning is when computers learn things. There are algorithms like neural networks.'},
+                {'role': 'review_agent', 'content': 'NEEDS_REVISION: Response is far too brief and lacks all required elements. Please provide a comprehensive guide with definitions, algorithm types, applications, resources, and pitfalls as requested.'},
+                {'role': 'assistant', 'content': 'Machine learning is a subset of AI where computers learn from data. Types include supervised learning (classification), unsupervised learning (clustering), and reinforcement learning. Applications include recommendation systems and image recognition.'},
+                {'role': 'review_agent', 'content': 'NEEDS_REVISION: Better but still incomplete. Missing 5 algorithm types with examples, getting started resources, common pitfalls, and needs to be 500+ words with better structure.'},
+                {'role': 'assistant', 'content': '''# Machine Learning for Beginners: A Comprehensive Guide
+
+## What is Machine Learning?
+Machine learning (ML) is a subset of artificial intelligence that enables computers to learn and improve from experience without being explicitly programmed for every task.
+
+## Types of ML Algorithms:
+1. **Supervised Learning**: Uses labeled data (e.g., email spam detection)
+2. **Unsupervised Learning**: Finds patterns in unlabeled data (e.g., customer segmentation)
+3. **Reinforcement Learning**: Learns through rewards/penalties (e.g., game AI)
+4. **Deep Learning**: Neural networks with multiple layers (e.g., image recognition)
+5. **Ensemble Methods**: Combines multiple algorithms (e.g., Random Forest)
+
+## Real-World Applications:
+- Healthcare: Disease diagnosis and drug discovery
+- Finance: Fraud detection and algorithmic trading
+- Transportation: Autonomous vehicles and route optimization
+- Entertainment: Content recommendation systems
+
+## Getting Started Resources:
+- Online courses: Coursera ML Course, edX MIT Introduction
+- Programming: Python with scikit-learn, TensorFlow
+- Books: "Hands-On Machine Learning" by Aurélien Géron
+- Practice platforms: Kaggle, Google Colab
+
+## Common Pitfalls:
+- Overfitting: Model memorizes training data
+- Insufficient data: Poor generalization
+- Feature selection: Using irrelevant variables
+- Bias in data: Unfair or discriminatory outcomes
+- Ignoring domain expertise: Technical solutions without context
+
+Machine learning requires patience, experimentation, and continuous learning as the field rapidly evolves.'''},
+                {'role': 'review_agent', 'content': 'APPROVED: Excellent comprehensive guide! Covers all required elements with clear structure, proper length, and valuable information for beginners.'}
+            ]
+        }
+        print_workflow_results(result, "Review Feedback Loop Demo")
+        return result
+    
     initial_state = setup_workflow_state(task)
     result = app.invoke(initial_state)
     
@@ -466,6 +518,7 @@ if __name__ == "__main__":
         print("If you don't have API access, run with --demo-only flag\n")
         
         run_all_tests()
+
 
 
 
