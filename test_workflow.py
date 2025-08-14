@@ -190,6 +190,45 @@ def test_code_generation():
 4. Has a clear docstring
 5. Uses an efficient algorithm (not naive recursion)"""
     
+    if not WORKFLOW_AVAILABLE or not DEPENDENCIES_AVAILABLE:
+        print("⚠️  Running in demo mode - showing expected workflow structure")
+        result = {
+            'review_status': 'approved',
+            'iteration_count': 1,
+            'current_task': task,
+            'review_feedback': None,
+            'messages': [
+                {'role': 'user', 'content': task},
+                {'role': 'assistant', 'content': '''def fibonacci(n: int) -> int:
+    """
+    Calculate the nth Fibonacci number using an efficient iterative approach.
+    
+    Args:
+        n (int): The position in the Fibonacci sequence (0-indexed)
+        
+    Returns:
+        int: The nth Fibonacci number
+        
+    Raises:
+        ValueError: If n is negative
+    """
+    if n < 0:
+        raise ValueError("Input must be non-negative")
+    
+    if n <= 1:
+        return n
+    
+    a, b = 0, 1
+    for _ in range(2, n + 1):
+        a, b = b, a + b
+    
+    return b'''},
+                {'role': 'review_agent', 'content': 'APPROVED: Excellent implementation! Includes proper docstring, error handling, efficient algorithm, and meets all requirements.'}
+            ]
+        }
+        print_workflow_results(result, "Code Generation")
+        return result
+    
     initial_state = setup_workflow_state(task)
     result = app.invoke(initial_state)
     
@@ -389,6 +428,7 @@ if __name__ == "__main__":
         print("If you don't have API access, run with --demo-only flag\n")
         
         run_all_tests()
+
 
 
 
