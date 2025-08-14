@@ -444,7 +444,8 @@ def demonstrate_generic_agent_configuration():
     print("\n💻 Example: Code-focused Agent Configuration")
 
     if DEPENDENCIES_AVAILABLE and WORKFLOW_AVAILABLE:
-        code_agent = create_main_agent(
+        # Code agent configuration (for demonstration)
+        create_main_agent(
             model=model,
             tools=[code_validator, word_count],
             prompt="""You are a senior software developer. 
@@ -591,4 +592,5 @@ if __name__ == "__main__":
         print("If you don't have API access, run with --demo-only flag\n")
 
         run_all_tests()
+
 
