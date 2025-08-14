@@ -380,7 +380,8 @@ if __name__ == "__main__":
     print("#     initial_tools=[search_tool, wiki_tool],")
     print("#     initial_prompt='You are a researcher. Use search and Wikipedia tools to "
           "gather comprehensive information.',")
-    print("#     review_prompt='You are a fact-checker. Verify the research quality and source reliability.'")
+    print("#     review_prompt='You are a fact-checker. Verify the research quality and "
+          "source reliability.'")
     print("# )")
 
     # Example 5: Advanced configuration options
@@ -442,6 +443,7 @@ if __name__ == "__main__":
 
     print("\n📝 The 'app' variable contains the default compiled workflow.")
     print("   Ready for deployment to LangGraph Platform or local development!")
+
 
 
 
