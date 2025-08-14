@@ -105,8 +105,9 @@ def create_two_stage_review_workflow(
         messages = state["messages"]
         last_ai_message = None
         
+        # Find the most recent AI message that's not a system message
         for msg in reversed(messages):
-            if isinstance(msg, AIMessage):
+            if isinstance(msg, AIMessage) and not isinstance(msg, SystemMessage):
                 last_ai_message = msg
                 break
         
@@ -117,17 +118,26 @@ def create_two_stage_review_workflow(
                 "is_retry": True
             }
         
-        # Create review prompt
+        # Get the original user question for context
+        user_question = ""
+        for msg in messages:
+            if isinstance(msg, HumanMessage):
+                user_question = msg.content
+                break
+        
+        # Create review prompt with context
         review_prompt = f"""
         Please review the following response for quality, accuracy, and completeness:
         
+        Original Question: {user_question}
         Response to review: {last_ai_message.content}
         
         Evaluate the response based on:
         1. Does it directly address the user's question/request?
         2. Is the information accurate and helpful?
         3. Is the response complete and well-structured?
-        4. Is the tone appropriate?
+        4. Is the tone appropriate and professional?
+        5. Are there any obvious errors or omissions?
         
         Respond with either:
         - "APPROVED" if the response is good quality and ready to be delivered
@@ -137,30 +147,32 @@ def create_two_stage_review_workflow(
         """
         
         review_messages = [
-            SystemMessage(content="You are a quality review agent. Your job is to evaluate responses and provide constructive feedback."),
+            SystemMessage(content="You are a quality review agent. Your job is to evaluate responses and provide constructive feedback for improvement."),
             HumanMessage(content=review_prompt)
         ]
         
         # Get review from the model
         review_result = model.invoke(review_messages)
-        review_content = review_result.content
+        review_content = review_result.content.strip()
         
         # Parse the review result
-        if review_content.startswith("APPROVED"):
+        if review_content.upper().startswith("APPROVED"):
             return {
-                "review_feedback": "Response approved",
+                "review_feedback": "Response approved by review agent",
                 "is_retry": False
             }
-        elif "NEEDS_IMPROVEMENT:" in review_content:
-            feedback = review_content.split("NEEDS_IMPROVEMENT:", 1)[1].strip()
+        elif "NEEDS_IMPROVEMENT:" in review_content.upper():
+            # Extract feedback after the colon
+            parts = review_content.split(":", 1)
+            feedback = parts[1].strip() if len(parts) > 1 else "General improvements needed"
             return {
                 "review_feedback": feedback,
                 "is_retry": True
             }
         else:
-            # Default to needing improvement if unclear
+            # If the format is unclear, be conservative and ask for improvement
             return {
-                "review_feedback": f"Review unclear. Original review: {review_content}",
+                "review_feedback": f"Please improve the response. Review notes: {review_content}",
                 "is_retry": True
             }
     
@@ -267,6 +279,7 @@ if __name__ == "__main__":
     print("Testing two-stage review workflow...")
     result = example_usage()
     print("Final result:", result)
+
 
 
 
