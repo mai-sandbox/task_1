@@ -464,7 +464,8 @@ def demonstrate_generic_agent_configuration():
     print("\n🔍 Example: Research-focused Agent Configuration")
 
     if DEPENDENCIES_AVAILABLE and WORKFLOW_AVAILABLE:
-        research_agent = create_main_agent(
+        # Research agent configuration (for demonstration)
+        create_main_agent(
             model=model,
             tools=[word_count],  # In practice, would include web search tools
             prompt="""You are a research analyst. 
@@ -592,5 +593,6 @@ if __name__ == "__main__":
         print("If you don't have API access, run with --demo-only flag\n")
 
         run_all_tests()
+
 
 
