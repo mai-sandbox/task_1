@@ -18,17 +18,35 @@ revision cycles based on feedback.
 
 import asyncio
 from typing import List, Any, Dict
-from langchain_core.tools import tool
-from langchain_core.messages import HumanMessage
-from langchain_anthropic import ChatAnthropic
 
-# Import our workflow
-from agent import (
-    app, 
-    setup_workflow_state, 
-    create_main_agent, 
-    ReviewWorkflowState
-)
+# Try to import dependencies, but provide fallbacks for demonstration
+try:
+    from langchain_core.tools import tool
+    from langchain_core.messages import HumanMessage
+    from langchain_anthropic import ChatAnthropic
+    DEPENDENCIES_AVAILABLE = True
+except ImportError:
+    DEPENDENCIES_AVAILABLE = False
+    print("⚠️  LangChain dependencies not installed. Running in demo mode.")
+    
+    # Mock tool decorator for demonstration
+    def tool(func):
+        func._is_tool = True
+        return func
+
+# Try to import our workflow
+try:
+    from agent import (
+        app, 
+        setup_workflow_state, 
+        create_main_agent, 
+        ReviewWorkflowState
+    )
+    WORKFLOW_AVAILABLE = True
+except ImportError as e:
+    WORKFLOW_AVAILABLE = False
+    print(f"⚠️  Could not import workflow: {e}")
+    print("This might be due to missing dependencies. Running in demo mode.")
 
 
 # Define some example tools for different agent types
@@ -336,3 +354,4 @@ if __name__ == "__main__":
         print("If you don't have API access, run with --demo-only flag\n")
         
         run_all_tests()
+
