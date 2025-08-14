@@ -1,0 +1,9 @@
+{
+    "dependencies": [
+        "./requirements.txt"
+    ],
+    "graphs": {
+        "two_stage_review_workflow": "./agent.py:app"
+    },
+    "env": "./.env"
+}
