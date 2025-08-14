@@ -248,6 +248,44 @@ Your analysis should include:
 3. Recommendations for best practices
 4. Be well-structured and comprehensive (300-400 words)"""
     
+    if not WORKFLOW_AVAILABLE or not DEPENDENCIES_AVAILABLE:
+        print("⚠️  Running in demo mode - showing expected workflow structure")
+        result = {
+            'review_status': 'approved',
+            'iteration_count': 1,
+            'current_task': task,
+            'review_feedback': None,
+            'messages': [
+                {'role': 'user', 'content': task},
+                {'role': 'assistant', 'content': '''Remote Work Analysis for Software Development Teams
+
+**Advantages:**
+1. **Flexibility & Work-Life Balance**: Developers can work during their most productive hours and better manage personal commitments.
+2. **Access to Global Talent**: Teams can hire the best developers regardless of geographic location.
+3. **Reduced Overhead Costs**: Companies save on office space, utilities, and equipment expenses.
+
+**Disadvantages:**
+1. **Communication Challenges**: Reduced face-to-face interaction can lead to misunderstandings and slower problem resolution.
+2. **Collaboration Difficulties**: Pair programming and spontaneous brainstorming sessions become more complex.
+3. **Isolation & Team Cohesion**: Developers may feel disconnected from team culture and company values.
+
+**Productivity & Collaboration Impact:**
+Remote work can boost individual productivity by eliminating commute time and office distractions. However, collaborative tasks may suffer without proper tools and processes.
+
+**Best Practice Recommendations:**
+- Implement robust communication tools (Slack, video calls)
+- Establish clear documentation standards
+- Schedule regular team check-ins and virtual social events
+- Use collaborative development tools (shared IDEs, code review systems)
+- Define clear expectations for availability and response times
+
+Success in remote software development requires intentional effort to maintain team connection and streamlined workflows.'''},
+                {'role': 'review_agent', 'content': 'APPROVED: Comprehensive analysis covering all required elements with clear structure, balanced perspective, and actionable recommendations.'}
+            ]
+        }
+        print_workflow_results(result, "Research and Analysis")
+        return result
+    
     initial_state = setup_workflow_state(task)
     result = app.invoke(initial_state)
     
@@ -428,6 +466,7 @@ if __name__ == "__main__":
         print("If you don't have API access, run with --demo-only flag\n")
         
         run_all_tests()
+
 
 
 
