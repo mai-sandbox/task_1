@@ -27,15 +27,13 @@ class ReviewWorkflowState(MessagesState):
     Extends MessagesState to include additional fields for workflow control.
     """
     # Track the current iteration count to prevent infinite loops
-    iteration_count: int = 0
-    # Store the original user input for context
-    original_input: str = ""
+    iteration_count: int
     # Track whether we're in initial run or retry
-    is_retry: bool = False
+    is_retry: bool
     # Store feedback from review agent for retry attempts
-    review_feedback: str = ""
+    review_feedback: str
     # Maximum number of retry attempts allowed
-    max_iterations: int = 3
+    max_iterations: int
 
 
 def create_two_stage_review_workflow(
@@ -268,4 +266,5 @@ if __name__ == "__main__":
     print("Testing two-stage review workflow...")
     result = example_usage()
     print("Final result:", result)
+
 
