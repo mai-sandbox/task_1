@@ -1,0 +1,12 @@
+{
+  "dependencies": [
+    "."
+  ],
+  "graphs": {
+    "agent": {
+      "path": "./agent.py:app",
+      "description": "Two-stage agent review workflow that processes user input through an initial agent, then reviews the output with a review agent, and either approves or sends back for improvement with feedback."
+    }
+  },
+  "env": ".env"
+}
