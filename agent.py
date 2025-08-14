@@ -316,7 +316,8 @@ if __name__ == "__main__":
             "- Engagement and value to readers\n"
             "- Grammar, style, and flow\n"
             "- Completeness and accuracy\n"
-            "Respond with 'APPROVED' if ready to publish, or 'NEEDS_REVISION' with specific improvements."
+            "            "Respond with 'APPROVED' if ready to publish, or 'NEEDS_REVISION' with "
+            "specific improvements.""
         )
     )
     print("✅ Created specialized content writing workflow")
@@ -440,5 +441,6 @@ if __name__ == "__main__":
 
     print("\n📝 The 'app' variable contains the default compiled workflow.")
     print("   Ready for deployment to LangGraph Platform or local development!")
+
 
 
