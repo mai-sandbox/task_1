@@ -8,13 +8,15 @@ This module implements a generic two-stage review workflow that:
 4. Implements conditional logic to either finish (if good) or retry with feedback
 5. Uses MessagesState for state management and conditional edges for routing decisions
 6. Exports the compiled graph as 'app' variable
+
+The workflow is designed to be deployment-ready and follows LangGraph best practices.
 """
 
-from typing import Literal, Dict, Any, Optional
+from typing import Literal, Dict, Any, Optional, Annotated
 from typing_extensions import TypedDict
-from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage, BaseMessage
 from langchain_anthropic import ChatAnthropic
-from langgraph.graph import StateGraph, MessagesState, START, END
+from langgraph.graph import StateGraph, MessagesState, START, END, add_messages
 from langgraph.prebuilt import create_react_agent
 from langgraph.types import Command
 
@@ -266,3 +268,4 @@ if __name__ == "__main__":
     print("Testing two-stage review workflow...")
     result = example_usage()
     print("Final result:", result)
+
