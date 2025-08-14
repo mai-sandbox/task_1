@@ -82,7 +82,9 @@ def create_initial_agent_node(
     return initial_agent_node
 
 
-def create_review_agent_node(model, tools: List = None, prompt: str = None, name: str = "review_agent"):
+def create_review_agent_node(
+    model, tools: List = None, prompt: str = None, name: str = "review_agent"
+):
     """
     Creates a review agent node using create_react_agent.
     This agent evaluates the output from the initial agent.
@@ -438,4 +440,5 @@ if __name__ == "__main__":
 
     print("\n📝 The 'app' variable contains the default compiled workflow.")
     print("   Ready for deployment to LangGraph Platform or local development!")
+
 
