@@ -236,6 +236,7 @@ def create_two_stage_review_workflow(
 
 
 # Create the default workflow instance and export as 'app'
+# This is the required export for LangGraph deployment
 app = create_two_stage_review_workflow()
 
 
@@ -253,6 +254,32 @@ def create_workflow_with_custom_agent(react_agent, max_iterations: int = 3):
     """
     return create_two_stage_review_workflow(
         react_agent=react_agent,
+        max_iterations=max_iterations
+    )
+
+
+# Function to create workflow with custom configuration
+def create_custom_review_workflow(
+    react_agent,
+    review_model_name: str = "claude-3-5-sonnet-20241022",
+    max_iterations: int = 3,
+    review_criteria: Optional[str] = None
+):
+    """
+    Create a customized review workflow with specific parameters.
+    
+    Args:
+        react_agent: The React agent to use in the workflow
+        review_model_name: Model name for the review agent
+        max_iterations: Maximum number of retry attempts
+        review_criteria: Custom review criteria (optional)
+    
+    Returns:
+        Compiled LangGraph workflow
+    """
+    return create_two_stage_review_workflow(
+        react_agent=react_agent,
+        model_name=review_model_name,
         max_iterations=max_iterations
     )
 
@@ -279,6 +306,7 @@ if __name__ == "__main__":
     print("Testing two-stage review workflow...")
     result = example_usage()
     print("Final result:", result)
+
 
 
 
