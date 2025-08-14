@@ -37,7 +37,7 @@ except ImportError:
 
 # Try to import our workflow
 try:
-    from agent import app, setup_workflow_state, create_main_agent, ReviewWorkflowState
+    from agent import app, setup_workflow_state, create_main_agent
 
     WORKFLOW_AVAILABLE = True
 except ImportError as e:
@@ -592,6 +592,7 @@ if __name__ == "__main__":
         print("If you don't have API access, run with --demo-only flag\n")
 
         run_all_tests()
+
 
 
 
