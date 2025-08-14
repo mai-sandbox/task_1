@@ -374,45 +374,69 @@ def demonstrate_generic_agent_configuration():
     
     # Example 1: Math-focused agent configuration
     print("\n📊 Example: Math-focused Agent Configuration")
-    model = ChatAnthropic(model="claude-3-5-sonnet-20241022")
     
-    math_agent = create_main_agent(
-        model=model,
-        tools=[calculator, word_count],
-        prompt="""You are a mathematics expert assistant. 
-        Use the calculator tool for any numerical computations.
-        Always show your work step by step and verify your calculations.""",
-        name="math_expert"
-    )
-    
-    print("✅ Math agent configured with calculator and word_count tools")
+    if DEPENDENCIES_AVAILABLE and WORKFLOW_AVAILABLE:
+        model = ChatAnthropic(model="claude-3-5-sonnet-20241022")
+        
+        math_agent = create_main_agent(
+            model=model,
+            tools=[calculator, word_count],
+            prompt="""You are a mathematics expert assistant. 
+            Use the calculator tool for any numerical computations.
+            Always show your work step by step and verify your calculations.""",
+            name="math_expert"
+        )
+        print("✅ Math agent configured with calculator and word_count tools")
+    else:
+        print("✅ Math agent would be configured with:")
+        print("   - Model: ChatAnthropic(claude-3-5-sonnet-20241022)")
+        print("   - Tools: [calculator, word_count]")
+        print("   - Prompt: Mathematics expert with step-by-step calculations")
     
     # Example 2: Code-focused agent configuration  
     print("\n💻 Example: Code-focused Agent Configuration")
-    code_agent = create_main_agent(
-        model=model,
-        tools=[code_validator, word_count],
-        prompt="""You are a senior software developer. 
-        Write clean, well-documented code with proper error handling.
-        Use the code_validator tool to check syntax before finalizing your response.""",
-        name="code_expert"
-    )
     
-    print("✅ Code agent configured with code_validator and word_count tools")
+    if DEPENDENCIES_AVAILABLE and WORKFLOW_AVAILABLE:
+        code_agent = create_main_agent(
+            model=model,
+            tools=[code_validator, word_count],
+            prompt="""You are a senior software developer. 
+            Write clean, well-documented code with proper error handling.
+            Use the code_validator tool to check syntax before finalizing your response.""",
+            name="code_expert"
+        )
+        print("✅ Code agent configured with code_validator and word_count tools")
+    else:
+        print("✅ Code agent would be configured with:")
+        print("   - Model: ChatAnthropic(claude-3-5-sonnet-20241022)")
+        print("   - Tools: [code_validator, word_count]")
+        print("   - Prompt: Senior developer with syntax validation")
     
     # Example 3: Research-focused agent configuration
     print("\n🔍 Example: Research-focused Agent Configuration")
-    research_agent = create_main_agent(
-        model=model,
-        tools=[word_count],  # In practice, would include web search tools
-        prompt="""You are a research analyst. 
-        Provide comprehensive, well-structured analysis with clear citations.
-        Always include multiple perspectives and evidence-based conclusions.""",
-        name="research_analyst"
-    )
     
-    print("✅ Research agent configured with analysis-focused prompt")
+    if DEPENDENCIES_AVAILABLE and WORKFLOW_AVAILABLE:
+        research_agent = create_main_agent(
+            model=model,
+            tools=[word_count],  # In practice, would include web search tools
+            prompt="""You are a research analyst. 
+            Provide comprehensive, well-structured analysis with clear citations.
+            Always include multiple perspectives and evidence-based conclusions.""",
+            name="research_analyst"
+        )
+        print("✅ Research agent configured with analysis-focused prompt")
+    else:
+        print("✅ Research agent would be configured with:")
+        print("   - Model: ChatAnthropic(claude-3-5-sonnet-20241022)")
+        print("   - Tools: [word_count, web_search] (in practice)")
+        print("   - Prompt: Research analyst with comprehensive analysis")
+    
     print("\n🎯 These examples show how the workflow accepts arbitrary React agent configurations!")
+    print("🔧 The generic design allows plugging in any combination of:")
+    print("   • Different language models (Anthropic, OpenAI, etc.)")
+    print("   • Custom tool sets for specific domains")
+    print("   • Specialized prompts for different use cases")
+    print("   • Agent names and configurations")
 
 
 def run_all_tests():
@@ -518,6 +542,7 @@ if __name__ == "__main__":
         print("If you don't have API access, run with --demo-only flag\n")
         
         run_all_tests()
+
 
 
 
