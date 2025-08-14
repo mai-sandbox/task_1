@@ -219,26 +219,26 @@ def test_code_generation():
                     "content": '''def fibonacci(n: int) -> int:
     """
     Calculate the nth Fibonacci number using an efficient iterative approach.
-    
+
     Args:
         n (int): The position in the Fibonacci sequence (0-indexed)
-        
+
     Returns:
         int: The nth Fibonacci number
-        
+
     Raises:
         ValueError: If n is negative
     """
     if n < 0:
         raise ValueError("Input must be non-negative")
-    
+
     if n <= 1:
         return n
-    
+
     a, b = 0, 1
     for _ in range(2, n + 1):
         a, b = b, a + b
-    
+
     return b''',
                 },
                 {
@@ -262,7 +262,7 @@ def test_research_analysis():
     print("🧪 TEST 4: Research and Analysis")
     print("Task: Analyze a complex topic")
 
-    task = """Analyze the pros and cons of remote work for software development teams. 
+    task = """Analyze the pros and cons of remote work for software development teams.
 Your analysis should include:
 1. At least 3 advantages and 3 disadvantages
 2. Impact on productivity and collaboration
@@ -326,7 +326,7 @@ def test_intentionally_poor_response():
     print("Task: This test shows how the review agent catches poor responses")
 
     # This task is designed to potentially trigger the review feedback loop
-    task = """Write a comprehensive guide on machine learning for beginners. 
+    task = """Write a comprehensive guide on machine learning for beginners.
 The guide must include:
 1. Clear definition of machine learning
 2. At least 5 different types of ML algorithms with examples
@@ -427,7 +427,7 @@ def demonstrate_generic_agent_configuration():
         create_main_agent(
             model=model,
             tools=[calculator, word_count],
-            prompt="""You are a mathematics expert assistant. 
+            prompt="""You are a mathematics expert assistant.
             Use the calculator tool for any numerical computations.
             Always show your work step by step and verify your calculations.""",
             name="math_expert",
@@ -447,7 +447,7 @@ def demonstrate_generic_agent_configuration():
         create_main_agent(
             model=model,
             tools=[code_validator, word_count],
-            prompt="""You are a senior software developer. 
+            prompt="""You are a senior software developer.
             Write clean, well-documented code with proper error handling.
             Use the code_validator tool to check syntax before finalizing your response.""",
             name="code_expert",
@@ -467,7 +467,7 @@ def demonstrate_generic_agent_configuration():
         create_main_agent(
             model=model,
             tools=[word_count],  # In practice, would include web search tools
-            prompt="""You are a research analyst. 
+            prompt="""You are a research analyst.
             Provide comprehensive, well-structured analysis with clear citations.
             Always include multiple perspectives and evidence-based conclusions.""",
             name="research_analyst",

@@ -109,7 +109,7 @@ def main_agent_node(state: ReviewWorkflowState) -> Dict[str, Any]:
 
     # Default tools and prompt - in a real implementation, these would be configurable
     default_prompt = """You are a helpful assistant. Complete the given task to the best of your ability.
-    
+
 If this is a revision based on feedback, carefully consider the review feedback and improve your previous response accordingly.
 
 Current task: {task}
