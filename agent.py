@@ -30,7 +30,9 @@ class ReviewWorkflowState(MessagesState):
     review_agent_config: Optional[Dict[str, Any]] = None
 
 
-def create_initial_agent_node(model, tools: List = None, prompt: str = None, name: str = "initial_agent"):
+def create_initial_agent_node(
+    model, tools: List = None, prompt: str = None, name: str = "initial_agent"
+):
     """
     Creates an initial agent node using create_react_agent.
     This allows for generic React agent injection.
@@ -436,3 +438,4 @@ if __name__ == "__main__":
 
     print("\n📝 The 'app' variable contains the default compiled workflow.")
     print("   Ready for deployment to LangGraph Platform or local development!")
+
