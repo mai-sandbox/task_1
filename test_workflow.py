@@ -21,7 +21,7 @@ from typing import Any, Dict
 # Try to import dependencies, but provide fallbacks for demonstration
 try:
     from langchain_core.tools import tool
-    from langchain_core.messages import HumanMessage
+
     from langchain_anthropic import ChatAnthropic
 
     DEPENDENCIES_AVAILABLE = True
@@ -592,6 +592,7 @@ if __name__ == "__main__":
         print("If you don't have API access, run with --demo-only flag\n")
 
         run_all_tests()
+
 
 
 
