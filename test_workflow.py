@@ -149,10 +149,28 @@ def test_math_problem_solving():
     print("🧪 TEST 2: Math Problem Solving")
     print("Task: Solve a complex math problem")
     
-    # This test would require modifying the agent to use the calculator tool
-    # For demonstration, we'll show how it would work conceptually
     task = "Calculate the compound interest for $1000 invested at 5% annual rate for 3 years, compounded annually. Show your work step by step."
     
+    if not WORKFLOW_AVAILABLE or not DEPENDENCIES_AVAILABLE:
+        print("⚠️  Running in demo mode - showing expected workflow structure")
+        # Mock result demonstrating review feedback loop
+        result = {
+            'review_status': 'needs_revision',
+            'iteration_count': 2,
+            'current_task': task,
+            'review_feedback': 'Please show the actual calculation steps and verify the final amount using the compound interest formula.',
+            'messages': [
+                {'role': 'user', 'content': task},
+                {'role': 'assistant', 'content': 'The compound interest would be approximately $157.63.'},
+                {'role': 'review_agent', 'content': 'NEEDS_REVISION: The response lacks detailed calculation steps and verification. Please show the work step by step.'},
+                {'role': 'assistant', 'content': 'Using the compound interest formula A = P(1 + r)^t:\nA = $1000(1 + 0.05)^3\nA = $1000(1.05)^3\nA = $1000 × 1.157625\nA = $1,157.63\nInterest earned = $1,157.63 - $1,000 = $157.63'},
+                {'role': 'review_agent', 'content': 'APPROVED: Excellent work! Shows clear step-by-step calculation using the correct formula.'}
+            ]
+        }
+        print_workflow_results(result, "Math Problem Solving")
+        return result
+    
+    # Run the actual workflow if dependencies are available
     initial_state = setup_workflow_state(task)
     result = app.invoke(initial_state)
     
@@ -371,5 +389,6 @@ if __name__ == "__main__":
         print("If you don't have API access, run with --demo-only flag\n")
         
         run_all_tests()
+
 
 
