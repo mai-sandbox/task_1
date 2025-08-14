@@ -246,74 +246,196 @@ app = create_default_workflow()
 # Example usage and configuration demonstrating generic design
 if __name__ == "__main__":
     """
-    Example usage showing how to inject arbitrary React agents
-    by passing different models, tools, and prompts to the workflow.
+    GENERIC DESIGN DEMONSTRATION
+    
+    This section demonstrates how to inject arbitrary React agents by passing 
+    different models, tools, and prompts to the workflow. The two-stage review 
+    workflow is completely generic and can be adapted for any use case.
+    
+    Key Generic Design Features:
+    1. Configurable models for both initial and review agents
+    2. Customizable tools for each agent
+    3. Domain-specific prompts for different use cases
+    4. Flexible workflow parameters
     """
     
-    # Example 1: Basic usage with default configuration
-    print("=== Example 1: Basic Usage ===")
-    basic_workflow = create_default_workflow()
+    print("🚀 DEMONSTRATING GENERIC TWO-STAGE REVIEW WORKFLOW")
+    print("=" * 60)
     
-    # Example 2: Custom prompts for different use cases
-    print("=== Example 2: Custom Prompts ===")
+    # Example 1: Basic usage with default configuration
+    print("\n=== Example 1: Basic Usage (Default Configuration) ===")
+    basic_workflow = create_default_workflow()
+    print("✅ Created basic workflow with default Claude model")
+    print("   Usage: basic_workflow.invoke({'messages': [HumanMessage('Hello')]})")
+    
+    # Example 2: Domain-specific workflows with custom prompts
+    print("\n=== Example 2: Domain-Specific Workflows ===")
     
     # Code review workflow
+    print("\n📝 Code Review Workflow:")
     code_review_workflow = create_two_stage_review_workflow(
         initial_model=ChatAnthropic(model="claude-3-5-sonnet-20241022"),
         initial_prompt=(
-            "You are a senior software engineer. "
-            "Review the code provided and suggest improvements. "
-            "Focus on best practices, performance, and maintainability."
+            "You are a senior software engineer conducting code reviews. "
+            "Analyze the provided code for:\n"
+            "- Best practices and design patterns\n"
+            "- Performance optimizations\n"
+            "- Security considerations\n"
+            "- Maintainability and readability\n"
+            "Provide specific, actionable feedback."
         ),
         review_prompt=(
-            "You are a technical lead reviewing code suggestions. "
-            "Evaluate if the code review is thorough and actionable. "
-            "Respond with 'APPROVED' if the review is comprehensive, "
-            "or 'NEEDS_REVISION' with specific areas to improve."
+            "You are a technical lead reviewing code review feedback. "
+            "Evaluate if the code review is:\n"
+            "- Comprehensive and covers all important aspects\n"
+            "- Actionable with specific suggestions\n"
+            "- Constructive and professional\n"
+            "Respond with 'APPROVED' if thorough, or 'NEEDS_REVISION' with gaps to address."
         )
     )
+    print("✅ Created specialized code review workflow")
     
     # Content writing workflow
+    print("\n✍️ Content Writing Workflow:")
     content_writing_workflow = create_two_stage_review_workflow(
         initial_model=ChatAnthropic(model="claude-3-5-sonnet-20241022"),
         initial_prompt=(
-            "You are a professional content writer. "
-            "Create engaging, well-structured content based on the user's request. "
-            "Focus on clarity, engagement, and value to the reader."
+            "You are a professional content writer specializing in engaging, "
+            "SEO-optimized content. Create content that:\n"
+            "- Captures reader attention from the first sentence\n"
+            "- Provides clear value and actionable insights\n"
+            "- Uses appropriate tone for the target audience\n"
+            "- Includes relevant examples and data when applicable"
         ),
         review_prompt=(
-            "You are an editor reviewing written content. "
-            "Check for clarity, engagement, grammar, and structure. "
-            "Respond with 'APPROVED' if the content meets publication standards, "
-            "or 'NEEDS_REVISION' with specific feedback for improvement."
+            "You are an experienced editor reviewing content for publication. "
+            "Evaluate the content for:\n"
+            "- Clarity and readability\n"
+            "- Engagement and value to readers\n"
+            "- Grammar, style, and flow\n"
+            "- Completeness and accuracy\n"
+            "Respond with 'APPROVED' if ready to publish, or 'NEEDS_REVISION' with specific improvements."
         )
     )
+    print("✅ Created specialized content writing workflow")
+    
+    # Legal document review workflow
+    print("\n⚖️ Legal Document Review Workflow:")
+    legal_review_workflow = create_two_stage_review_workflow(
+        initial_model=ChatAnthropic(model="claude-3-5-sonnet-20241022"),
+        initial_prompt=(
+            "You are a legal analyst reviewing documents. "
+            "Analyze the document for:\n"
+            "- Legal compliance and regulatory requirements\n"
+            "- Potential risks and liabilities\n"
+            "- Clarity of terms and conditions\n"
+            "- Completeness of necessary clauses\n"
+            "Provide detailed legal analysis and recommendations."
+        ),
+        review_prompt=(
+            "You are a senior legal counsel reviewing legal analysis. "
+            "Evaluate if the analysis:\n"
+            "- Identifies all relevant legal issues\n"
+            "- Provides accurate legal interpretation\n"
+            "- Offers practical recommendations\n"
+            "- Meets professional legal standards\n"
+            "Respond with 'APPROVED' if comprehensive, or 'NEEDS_REVISION' with missing elements."
+        )
+    )
+    print("✅ Created specialized legal document review workflow")
     
     # Example 3: Different models for different stages
-    print("=== Example 3: Different Models ===")
+    print("\n=== Example 3: Mixed Model Configuration ===")
+    print("🔄 Using different models for initial vs review stages:")
     
-    # Using different models (if available)
     mixed_model_workflow = create_two_stage_review_workflow(
         initial_model=ChatAnthropic(model="claude-3-5-sonnet-20241022"),
-        review_model=ChatAnthropic(model="claude-3-5-sonnet-20241022"),  # Could be different model
-        initial_prompt="You are a creative writer generating initial drafts.",
-        review_prompt="You are a strict editor ensuring quality standards."
+        review_model=ChatAnthropic(model="claude-3-5-sonnet-20241022"),  # Could use different model
+        initial_prompt="You are a creative writer generating innovative content.",
+        review_prompt="You are a strict quality assurance reviewer ensuring excellence.",
+        max_iterations=3  # Custom iteration limit
     )
+    print("✅ Created workflow with different models for each stage")
+    print("   - Initial Agent: Claude 3.5 Sonnet (creative)")
+    print("   - Review Agent: Claude 3.5 Sonnet (analytical)")
     
-    # Example 4: With tools (if you have tools available)
-    print("=== Example 4: With Tools ===")
+    # Example 4: Tool integration examples
+    print("\n=== Example 4: Tool Integration Examples ===")
+    print("🛠️ Demonstrating tool injection capabilities:")
     
-    # Example tools (you would import actual tools)
-    # from langchain_community.tools import DuckDuckGoSearchRun
-    # search_tool = DuckDuckGoSearchRun()
+    # Example with mock tools (commented to avoid import errors)
+    print("\n📚 Research Workflow (with search tools):")
+    print("# Uncomment and install tools to use:")
+    print("# from langchain_community.tools import DuckDuckGoSearchRun, WikipediaQueryRun")
+    print("# from langchain_community.utilities import WikipediaAPIWrapper")
+    print("#")
+    print("# search_tool = DuckDuckGoSearchRun()")
+    print("# wiki_tool = WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())")
+    print("#")
+    print("# research_workflow = create_two_stage_review_workflow(")
+    print("#     initial_model=ChatAnthropic(model='claude-3-5-sonnet-20241022'),")
+    print("#     initial_tools=[search_tool, wiki_tool],")
+    print("#     initial_prompt='You are a researcher. Use search and Wikipedia tools to gather comprehensive information.',")
+    print("#     review_prompt='You are a fact-checker. Verify the research quality and source reliability.'")
+    print("# )")
     
-    # research_workflow = create_two_stage_review_workflow(
-    #     initial_model=ChatAnthropic(model="claude-3-5-sonnet-20241022"),
-    #     initial_tools=[search_tool],
-    #     initial_prompt="You are a researcher. Use search tools to gather information.",
-    #     review_prompt="You are a fact-checker reviewing research quality."
-    # )
+    # Example 5: Advanced configuration options
+    print("\n=== Example 5: Advanced Configuration ===")
+    print("⚙️ Advanced workflow customization:")
     
-    print("All example workflows created successfully!")
-    print("The 'app' variable contains the default compiled workflow.")
-    print("Use app.invoke({'messages': [HumanMessage('Your query here')]}) to run it.")
+    advanced_workflow = create_two_stage_review_workflow(
+        initial_model=ChatAnthropic(model="claude-3-5-sonnet-20241022"),
+        review_model=ChatAnthropic(model="claude-3-5-sonnet-20241022"),
+        initial_tools=[],  # No tools for this example
+        review_tools=[],   # No tools for review
+        initial_prompt=(
+            "You are an AI assistant with expertise in multiple domains. "
+            "Adapt your response style and depth based on the user's query. "
+            "Always strive for accuracy, helpfulness, and clarity."
+        ),
+        review_prompt=(
+            "You are a quality assurance specialist reviewing AI responses. "
+            "Check for accuracy, completeness, helpfulness, and appropriateness. "
+            "Consider if the response fully addresses the user's needs. "
+            "Respond with 'APPROVED' if satisfactory, or 'NEEDS_REVISION' with specific improvements."
+        ),
+        max_iterations=5  # Allow up to 5 revision cycles
+    )
+    print("✅ Created advanced workflow with custom iteration limits")
+    
+    # Example 6: Workflow comparison
+    print("\n=== Example 6: Workflow Usage Patterns ===")
+    print("🎯 Different ways to use the generic workflow:")
+    
+    workflows = {
+        "Basic": basic_workflow,
+        "Code Review": code_review_workflow,
+        "Content Writing": content_writing_workflow,
+        "Legal Review": legal_review_workflow,
+        "Mixed Models": mixed_model_workflow,
+        "Advanced": advanced_workflow
+    }
+    
+    print(f"\n📊 Created {len(workflows)} different workflow configurations:")
+    for name, workflow in workflows.items():
+        print(f"   • {name}: Ready for use")
+    
+    print("\n" + "=" * 60)
+    print("🎉 GENERIC DESIGN DEMONSTRATION COMPLETE")
+    print("=" * 60)
+    
+    print("\n💡 Key Takeaways:")
+    print("   1. Same workflow structure, completely different behaviors")
+    print("   2. Easy to inject any React agent configuration")
+    print("   3. Supports any model, tools, and prompts combination")
+    print("   4. Configurable parameters for different use cases")
+    print("   5. Maintains consistent two-stage review pattern")
+    
+    print("\n🚀 Usage Instructions:")
+    print("   • Default workflow: app.invoke({'messages': [HumanMessage('Your query')]})")
+    print("   • Custom workflow: your_workflow.invoke({'messages': [HumanMessage('Query')]})")
+    print("   • All workflows follow the same interface pattern")
+    
+    print("\n📝 The 'app' variable contains the default compiled workflow.")
+    print("   Ready for deployment to LangGraph Platform or local development!")
+
