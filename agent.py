@@ -76,22 +76,23 @@ def create_two_stage_review_workflow(
                 content=f"Previous attempt needs improvement. Feedback: {state['review_feedback']}. "
                         f"Please revise your response based on this feedback."
             )
-            messages.insert(-1, feedback_message)  # Insert before the last user message
+            messages.append(feedback_message)
         
         # Run the React agent
         result = react_agent.invoke({"messages": messages})
         
-        # Extract the final response
-        final_messages = result.get("messages", [])
-        if final_messages:
-            # Add the agent's response to our messages
-            new_messages = state["messages"] + [final_messages[-1]]
+        # Extract the final response - get all new messages from the agent
+        agent_messages = result.get("messages", [])
+        if agent_messages:
+            # Find new messages that weren't in the original input
+            original_count = len(messages)
+            new_agent_messages = agent_messages[original_count:] if len(agent_messages) > original_count else [agent_messages[-1]]
         else:
             # Fallback if no messages returned
-            new_messages = state["messages"] + [AIMessage(content="No response generated.")]
+            new_agent_messages = [AIMessage(content="No response generated.")]
         
         return {
-            "messages": new_messages,
+            "messages": state["messages"] + new_agent_messages,
             "iteration_count": state.get("iteration_count", 0) + 1,
             "is_retry": False  # Reset retry flag after processing
         }
@@ -266,5 +267,6 @@ if __name__ == "__main__":
     print("Testing two-stage review workflow...")
     result = example_usage()
     print("Final result:", result)
+
 
 
