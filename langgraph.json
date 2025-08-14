@@ -1,0 +1,39 @@
+{
+  "graph_id": "two-stage-review-workflow",
+  "entrypoint": "./agent.py:app",
+  "dependencies": [
+    "langgraph",
+    "langchain-core",
+    "langchain-anthropic",
+    "typing-extensions"
+  ],
+  "environment_variables": [
+    "ANTHROPIC_API_KEY"
+  ],
+  "python_version": "3.11",
+  "description": "A generic two-stage agent review workflow that accepts any React agent and implements a review loop with conditional routing",
+  "metadata": {
+    "created_by": "LangGraph Agent Development",
+    "version": "1.0.0",
+    "workflow_type": "multi-agent-review",
+    "supports_streaming": true,
+    "supports_interrupts": false
+  },
+  "configuration_schema": {
+    "type": "object",
+    "properties": {
+      "max_iterations": {
+        "type": "integer",
+        "default": 3,
+        "minimum": 1,
+        "maximum": 10,
+        "description": "Maximum number of review iterations before forcing completion"
+      },
+      "review_model": {
+        "type": "string",
+        "default": "claude-3-5-sonnet-20241022",
+        "description": "Model to use for the review agent"
+      }
+    }
+  }
+}
