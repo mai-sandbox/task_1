@@ -592,9 +592,3 @@ if __name__ == "__main__":
         print("If you don't have API access, run with --demo-only flag\n")
 
         run_all_tests()
-
-
-
-
-
-
