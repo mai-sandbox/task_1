@@ -82,9 +82,9 @@ def code_validator(code: str) -> str:
 
 def print_workflow_results(result: Dict[str, Any], task_name: str):
     """Helper function to print workflow results in a readable format."""
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"WORKFLOW RESULTS: {task_name}")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
 
     print(f"Final Status: {result.get('review_status', 'Unknown')}")
     print(f"Iterations: {result.get('iteration_count', 0)}")
@@ -592,3 +592,4 @@ if __name__ == "__main__":
         print("If you don't have API access, run with --demo-only flag\n")
 
         run_all_tests()
+
