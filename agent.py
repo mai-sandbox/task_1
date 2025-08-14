@@ -402,7 +402,8 @@ if __name__ == "__main__":
             "You are a quality assurance specialist reviewing AI responses. "
             "Check for accuracy, completeness, helpfulness, and appropriateness. "
             "Consider if the response fully addresses the user's needs. "
-            "Respond with 'APPROVED' if satisfactory, or 'NEEDS_REVISION' with specific improvements."
+            "            "Respond with 'APPROVED' if satisfactory, or 'NEEDS_REVISION' with "
+            "specific improvements.""
         ),
         max_iterations=5  # Allow up to 5 revision cycles
     )
@@ -443,6 +444,7 @@ if __name__ == "__main__":
 
     print("\n📝 The 'app' variable contains the default compiled workflow.")
     print("   Ready for deployment to LangGraph Platform or local development!")
+
 
 
 
